@@ -1682,14 +1682,30 @@
             showLoading();
 
             try {
-                // Filter data by selected year
-                const yearData = allData.filter(item => item.fiscalYear === exportYear);
+                // Debug: Log all data and filter criteria
+                console.log('All data:', allData);
+                console.log('Export year:', exportYear);
+                console.log('Sample fiscal years in data:', allData.map(item => item.fiscalYear).slice(0, 5));
+                
+                // Filter data by selected year (convert both to string for comparison)
+                const yearData = allData.filter(item => {
+                    const itemYear = String(item.fiscalYear || '').trim();
+                    const selectedYear = String(exportYear).trim();
+                    console.log(`Comparing: "${itemYear}" === "${selectedYear}"`, itemYear === selectedYear);
+                    return itemYear === selectedYear;
+                });
+
+                console.log('Filtered year data:', yearData);
 
                 if (yearData.length === 0) {
+                    // Show debug info
+                    const availableYears = [...new Set(allData.map(item => item.fiscalYear))].filter(year => year);
                     Swal.fire({
                         icon: 'info',
                         title: 'ไม่มีข้อมูล',
-                        text: `ไม่พบข้อมูลในปีงบประมาณ ${exportYear}`
+                        html: `ไม่พบข้อมูลในปีงบประมาณ ${exportYear}<br><br>
+                               ปีงบประมาณที่มีข้อมูล: ${availableYears.join(', ')}<br>
+                               จำนวนข้อมูลทั้งหมด: ${allData.length} รายการ`
                     });
                     return;
                 }
@@ -1920,5 +1936,5 @@
             return date.toLocaleDateString('th-TH');
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9847c05997757334',t:'MTc1ODc3NDI2MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9847c93dc1ae7334',t:'MTc1ODc3NDYyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
